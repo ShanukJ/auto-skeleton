@@ -1,0 +1,47 @@
+{
+  "name": "auto-skeleton-react",
+  "version": "1.0.0",
+  "description": "Auto-generate skeleton loading screens from your existing React DOM structure",
+  "type": "module",
+  "main": "dist/auto-skeleton-react.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/auto-skeleton-react.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:lib": "LIB_BUILD=1 vite build && tsc -p tsconfig.lib.json",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build:lib"
+  },
+  "keywords": [
+    "react",
+    "skeleton",
+    "loading",
+    "auto-skeleton",
+    "placeholder",
+    "skeleton-screen",
+    "loading-state"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.8"
+  }
+}
