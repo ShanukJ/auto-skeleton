@@ -27,6 +27,14 @@
     "skeleton-screen",
     "loading-state"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShanukJ/auto-skeleton.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ShanukJ/auto-skeleton/issues"
+  },
+  "homepage": "https://github.com/ShanukJ/auto-skeleton#readme",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=18.0.0",
