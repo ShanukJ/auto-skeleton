@@ -1,74 +1,17 @@
-# AutoSkeleton Prototype
+# auto-skeleton-react
 
-Automatic loading skeletons for React via DOM inspection.
+Auto-generate skeleton loading screens from your existing React DOM structure. Zero manual skeleton creation for 70-80% of use cases.
 
-## Quick Start
+## Installation
 
 ```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
+npm install auto-skeleton-react
 ```
 
-Open http://localhost:5173 in your browser.
-
-## What This Demonstrates
-
-- **DOM Traversal**: Measures and inspects rendered component structure
-- **Leaf-Only Skeletons**: Preserves layout containers, replaces only visual leaf elements
-- **Spacing Preservation**: Maintains margins, padding, gaps, line-height, and flex/grid properties
-- **Role Inference**: Score-based heuristics classify elements (text, image, icon, button, input)
-- **Layout Preservation**: Maintains flexbox/grid layouts, inline/block display types
-- **Multi-line Text**: Detects and renders multiple skeleton lines for text blocks
-- **Zero Manual Work**: No separate skeleton components needed for 70-80% of cases
-
-## Architecture
-
-**Key Strategy: Wrapper + Content Pattern**
-- Wrapper preserves: display, margin, padding, flex properties, grid properties
-- Inner skeleton: only visual properties (width, height, color, border-radius)
-- Result: Exact spacing and layout with skeleton replacements
-
-**Multi-line Text Detection:**
-- Calculates lines from `height / line-height`
-- Renders N skeleton bars with proper vertical spacing
-- Last line is 70% width for natural appearance
-
-**Decision Rules:**
-```typescript
-// KEEP as container (recurse into children):
-- Has 2+ children
-- Has flex/grid display
-- Wrapper divs
-
-// REPLACE with skeleton:
-- <img>, <button>, <input>, <textarea>, <select>, <svg>
-- Text elements with no children
-- Single-child text containers
-```
-
-## Project Structure
-
-```
-src/
-├── lib/
-│   ├── AutoSkeleton.tsx       # Main component
-│   ├── dom-traverser.ts       # DOM measurement logic
-│   ├── role-inferencer.ts     # Heuristic-based classification
-│   ├── skeleton-renderer.tsx  # Skeleton block renderer
-│   ├── types.ts               # TypeScript interfaces
-│   └── index.ts               # Public API exports
-├── DemoComponents.tsx         # Example components
-├── App.tsx                    # Demo app
-└── main.tsx                   # Entry point
-```
-
-## Basic Usage
+## Usage
 
 ```tsx
-import { AutoSkeleton } from './lib';
+import { AutoSkeleton } from 'auto-skeleton-react';
 
 function MyComponent() {
   const [loading, setLoading] = useState(true);
@@ -81,26 +24,31 @@ function MyComponent() {
 }
 ```
 
-## Escape Hatches
+## How It Works
 
-```tsx
-// Ignore specific elements
-<div data-skeleton-ignore>
-  <SensitiveComponent />
-</div>
+1. When `loading={true}`, the component renders children invisibly
+2. DOM is traversed and measured (dimensions, styles, attributes)
+3. Heuristics classify elements as text, image, icon, button, input, or container
+4. Skeleton blocks are rendered matching the original layout
+5. When `loading={false}`, the real content fades in
 
-// Force specific skeleton type
-<img data-skeleton-role="image" />
-<span data-skeleton-role="text" />
-```
+## Features
+
+- **Zero manual work** — wraps any React component, no separate skeleton needed
+- **Layout preservation** — maintains flexbox, grid, margins, padding, gaps
+- **Multi-line text** — auto-detects line count from element height
+- **Table support** — preserves table structure (thead, tbody, tr, td)
+- **Opt-out mechanism** — `data-no-skeleton` or `.no-skeleton` keeps elements visible during loading
+- **Smooth transitions** — crossfade between skeleton and content
+- **Configurable** — animation, colors, border radius, depth limits
 
 ## Configuration
 
 ```tsx
-<AutoSkeleton 
+<AutoSkeleton
   loading={loading}
   config={{
-    animation: 'pulse',
+    animation: 'pulse',      // 'pulse' | 'shimmer' | 'none'
     baseColor: '#e0e0e0',
     borderRadius: 4,
     minTextHeight: 12,
@@ -109,6 +57,52 @@ function MyComponent() {
 >
   <MyComponent />
 </AutoSkeleton>
+```
+
+## Opt-Out (No Skeleton)
+
+Keep specific elements visible during loading:
+
+```tsx
+{/* Using data attribute */}
+<div data-no-skeleton>
+  <span>Always visible during loading</span>
+</div>
+
+{/* Using class name */}
+<button className="no-skeleton">Cancel</button>
+```
+
+## Escape Hatches
+
+```tsx
+{/* Force a specific skeleton type */}
+<img data-skeleton-role="image" />
+<span data-skeleton-role="text" />
+
+{/* Ignore specific elements */}
+<div data-skeleton-ignore>
+  <SensitiveComponent />
+</div>
+```
+
+## Architecture
+
+- **Leaf-only replacement** — preserves container structure, replaces only visual leaves
+- **Wrapper + content pattern** — wrapper keeps spacing, inner div gets skeleton styling
+- **Score-based inference** — extensible heuristics avoid brittle if/else chains
+- **requestAnimationFrame** — ensures DOM is painted before measurement
+
+## Project Structure
+
+```
+src/
+├── AutoSkeleton.tsx       # Main component
+├── dom-traverser.ts       # DOM measurement logic
+├── role-inferencer.ts     # Heuristic-based classification
+├── skeleton-renderer.tsx  # Skeleton block renderer
+├── types.ts               # TypeScript interfaces
+└── index.ts               # Public API exports
 ```
 
 ## Known Limitations
@@ -121,34 +115,16 @@ function MyComponent() {
 
 ## When to Use
 
-✅ Standard CRUD forms, dashboards, profile pages  
-✅ Prototyping and MVPs  
-✅ Reducing 70-80% of manual skeleton work  
+- Standard CRUD forms, dashboards, profile pages
+- Prototyping and MVPs
+- Reducing 70-80% of manual skeleton work
 
-❌ Highly custom, pixel-perfect designs  
-❌ Virtualized tables or infinite scrollers  
-❌ Performance-critical views with frequent loading  
+## When Not to Use
 
-## Architecture Decisions
-
-1. **Leaf-Only Replacement**: Preserves container structure, only replaces visual leaves
-2. **Wrapper + Content Pattern**: Wrapper keeps spacing, inner div gets skeleton styling
-3. **Preserved Properties**: display, margin, padding, line-height, flex/grid positioning
-4. **Score-Based Inference**: Extensible heuristics avoid brittle if/else chains
-5. **requestAnimationFrame**: Ensures DOM is painted before measurement
-6. **No SSR Generation**: Accepts client-side flash to avoid build complexity
-7. **Multi-line Text**: Auto-detects line count from height/line-height ratio
-
-## Next Steps for Production
-
-- Add debouncing (useMemo with smart deps)
-- Implement shimmer animation (CSS gradient mask)
-- Add image load detection (onLoad listeners)
-- Improve performance monitoring
-- Add error boundaries
-- Create comprehensive test suite
-- Publish to NPM
+- Highly custom, pixel-perfect designs
+- Virtualized tables or infinite scrollers
+- Performance-critical views with frequent loading
 
 ## License
 
-MIT (Prototype for demonstration purposes)
+MIT
