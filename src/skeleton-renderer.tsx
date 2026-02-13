@@ -130,9 +130,6 @@ function renderNode(
     const borderValue = node.preservedStyles?.border || '';
     const hasMeaningfulBorder = borderValue && !borderValue.includes('0px') && !borderValue.startsWith('none');
 
-    // Check if this is a grid container - grid children will stretch to fill
-    const isGridContainer = node.display === 'grid';
-
     return (
       <div
         key={key}
@@ -150,9 +147,9 @@ function renderNode(
           alignItems: node.preservedStyles?.alignItems as React.CSSProperties['alignItems'],
           flexDirection: node.preservedStyles?.flexDirection as React.CSSProperties['flexDirection'],
           minHeight: node.preservedStyles?.minHeight,
-          // For grid: use auto columns to let children size naturally
-          // For non-grid: use measured template
-          gridTemplateColumns: isGridContainer ? `repeat(${node.children.length}, 1fr)` : node.preservedStyles?.gridTemplateColumns,
+          // Preserve measured grid template so responsive breakpoints (e.g. md:grid-cols-*)
+          // are kept exactly during skeleton rendering.
+          gridTemplateColumns: node.preservedStyles?.gridTemplateColumns,
           gridTemplateRows: node.preservedStyles?.gridTemplateRows,
         }}
       >
