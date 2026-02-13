@@ -1,6 +1,6 @@
 {
   "name": "auto-skeleton-react",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Auto-generate skeleton loading screens from your existing React DOM structure",
   "type": "module",
   "main": "dist/auto-skeleton-react.js",
