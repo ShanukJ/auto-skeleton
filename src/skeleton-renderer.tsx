@@ -140,9 +140,16 @@ function renderNode(
           // Don't set fixed height - let container size naturally from children
           // This avoids issues with incorrect height measurement from alt text
           boxSizing: 'border-box',
+          margin: node.preservedStyles?.margin,
           padding: node.preservedStyles?.padding,
           border: hasMeaningfulBorder ? node.preservedStyles?.border : undefined,
           borderRadius: node.borderRadius,
+          flex: node.preservedStyles?.flex,
+          flexGrow: node.preservedStyles?.flexGrow ? Number(node.preservedStyles.flexGrow) : undefined,
+          flexShrink: node.preservedStyles?.flexShrink ? Number(node.preservedStyles.flexShrink) : undefined,
+          flexBasis: node.preservedStyles?.flexBasis,
+          alignSelf: node.preservedStyles?.alignSelf as React.CSSProperties['alignSelf'],
+          justifySelf: node.preservedStyles?.justifySelf as React.CSSProperties['justifySelf'],
           justifyContent: node.preservedStyles?.justifyContent as React.CSSProperties['justifyContent'],
           alignItems: node.preservedStyles?.alignItems as React.CSSProperties['alignItems'],
           flexDirection: node.preservedStyles?.flexDirection as React.CSSProperties['flexDirection'],
@@ -151,6 +158,9 @@ function renderNode(
           // are kept exactly during skeleton rendering.
           gridTemplateColumns: node.preservedStyles?.gridTemplateColumns,
           gridTemplateRows: node.preservedStyles?.gridTemplateRows,
+          gridColumn: node.preservedStyles?.gridColumn,
+          gridRow: node.preservedStyles?.gridRow,
+          gridArea: node.preservedStyles?.gridArea,
         }}
       >
         {node.children.map((child, i) =>
