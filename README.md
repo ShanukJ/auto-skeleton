@@ -1,6 +1,12 @@
 # auto-skeleton-react
 
+![npm version](https://img.shields.io/npm/v/auto-skeleton-react)
+![npm downloads](https://img.shields.io/npm/dm/auto-skeleton-react)
+![license](https://img.shields.io/npm/l/auto-skeleton-react)
+
 Auto-generate skeleton loading screens from your existing React DOM structure. Zero manual skeleton creation for 70-80% of use cases.
+
+**[Live Demo](https://autoskeleton.shanukj.me)** | **[Documentation](https://autoskeleton.shanukj.me/docs)**
 
 ## Installation
 
