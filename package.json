@@ -34,7 +34,7 @@
   "bugs": {
     "url": "https://github.com/ShanukJ/auto-skeleton/issues"
   },
-  "homepage": "https://github.com/ShanukJ/auto-skeleton#readme",
+  "homepage": "https://autoskeleton.shanukj.me",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=18.0.0",
